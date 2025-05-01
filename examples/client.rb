@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << 'lib'
-require 'modbus'
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'eventmachine'
+  gem 'em-modbus', path: __dir__ + '/..', require: 'modbus'
+  gem 'logger'
+end
 
 class Client < Modbus::Client
 
@@ -74,7 +80,6 @@ trap 'INT' do
 end
 
 EM.run do
-  # client = Client.new 'tcp://localhost:1502'
-  client = Client.new 'tcp://192.168.56.101:502'
+  client = Client.new 'tcp://localhost:1502'
   client.connect
 end

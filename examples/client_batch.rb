@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << 'lib'
-require 'modbus'
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'eventmachine'
+  gem 'em-modbus', path: __dir__ + '/..', require: 'modbus'
+  gem 'logger'
+end
 
 class Client < Modbus::Client
 

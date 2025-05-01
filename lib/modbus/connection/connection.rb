@@ -1,7 +1,7 @@
 # Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
 # All rights reserved.
 
-require 'modbus/connection/protocol_data'
-require 'modbus/connection/base'
-require 'modbus/connection/tcp_client'
-require 'modbus/connection/tcp_server'
+require_relative 'protocol_data'
+require_relative 'base'
+require_relative 'tcp_client'
+require_relative 'tcp_server'

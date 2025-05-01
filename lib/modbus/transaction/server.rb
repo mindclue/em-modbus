@@ -35,8 +35,14 @@ module Modbus
       #
       def send_pdu(pdu)
         @response_adu = TCPADU.new pdu, @request_adu.transaction_ident, @request_adu.unit_ident
+        logger.debug "Response ADU: #{@response_adu.inspect}"
         @conn.send_data @response_adu.encode
         self
+      end
+
+
+      def logger
+        @conn.handler.handler.log
       end
 
 
@@ -46,6 +52,8 @@ module Modbus
       # @param adu [Modbus::ADU] The ADU to handle.
       #
       def handle_request(adu)
+        logger.debug "Handling request ADU: #{adu.inspect}"
+
         @request_adu = adu
 
         transaction = TRANSACTIONS.find { |t| adu.pdu.is_a? t[:request] }
@@ -53,6 +61,8 @@ module Modbus
         fail ServerDeviceFailure, "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
 
         pdu = send transaction[:handler]
+        logger.debug "Response PDU: #{pdu.inspect}"
+
         send_pdu pdu
 
       rescue ModbusError => error

@@ -1,7 +1,4 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'modbus/version'
+require_relative 'lib/modbus/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'em-modbus'

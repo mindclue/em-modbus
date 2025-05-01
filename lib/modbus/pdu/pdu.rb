@@ -1,15 +1,15 @@
 # Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
 # All rights reserved.
 
-require 'modbus/pdu/exception'
-require 'modbus/pdu/read_bits'
-require 'modbus/pdu/read_coils'
-require 'modbus/pdu/read_input_status'
-require 'modbus/pdu/read_registers'
-require 'modbus/pdu/read_input_registers'
-require 'modbus/pdu/read_holding_registers'
-require 'modbus/pdu/write_multiple_registers'
-require 'modbus/pdu/write_single_coil'
+require_relative 'exception'
+require_relative 'read_bits'
+require_relative 'read_coils'
+require_relative 'read_input_status'
+require_relative 'read_registers'
+require_relative 'read_input_registers'
+require_relative 'read_holding_registers'
+require_relative 'write_multiple_registers'
+require_relative 'write_single_coil'
 
 module Modbus
 

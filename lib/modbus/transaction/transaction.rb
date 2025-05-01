@@ -1,9 +1,9 @@
 # Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
 # All rights reserved.
 
-require 'modbus/transaction/base'
-require 'modbus/transaction/client'
-require 'modbus/transaction/server'
+require_relative 'base'
+require_relative 'client'
+require_relative 'server'
 
 module Modbus
   module Transaction
