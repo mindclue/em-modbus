@@ -102,7 +102,16 @@ module Modbus
       def encode
         data = super
         data.push_byte byte_count
-        @bit_values.each do |value|
+
+        @bit_values.each_slice(8) do |bools|
+          value   = 0
+          bit_pos = 0
+
+          bools.each do |bool|
+            value   += (1 << bit_pos) if bool
+            bit_pos += 1
+          end
+
           data.push_byte value
         end
         data
@@ -114,7 +123,7 @@ module Modbus
       # @return [Integer] The length.
       #
       def byte_count
-        @bit_values.size
+        (@bit_values.size.to_f / 8).ceil
       end
 
 

@@ -7,6 +7,9 @@ module Modbus
 
   class BitRegister < Register
 
+    attr_reader :bits
+
+
     def initialize(addr)
       super
       @bits = {}

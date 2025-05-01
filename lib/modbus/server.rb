@@ -7,6 +7,7 @@ module Modbus
 
   class Server
     attr_reader :registers
+    attr_reader :handler
 
 
     def initialize(uri, handler)
@@ -66,6 +67,33 @@ module Modbus
         addr = start_addr + idx
         read_register addr
       end
+    end
+
+
+    def read_bits(start_addr, bit_count)
+      addr   = start_addr
+      bit    = 0
+      values = []
+
+      bit_count.times do |i|
+        bit   = i % 8
+        addr += 1 if i > 0 && bit == 0
+        reg   = @registers.fetch addr
+
+        unless reg.is_a? BitRegister
+          fail IllegalDataAddress, "wrong register type for read_bits" 
+        end
+
+        value = reg.bits.fetch bit
+        values << value
+      end
+
+      values
+    rescue IndexError
+      log.warn "read_bits @ #{addr} failed (IllegalDataAddress)"
+      fail IllegalDataAddress
+    rescue => e
+      log.warn "read_bits @ #{addr} failed. Error: #{e.message} (#{e.class}), Line: #{e.backtrace.first}"
     end
 
 

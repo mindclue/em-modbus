@@ -6,6 +6,7 @@ module Modbus
 
     class Base < EM::Connection
 
+      attr_reader :handler
 
       def initialize(handler)
         @handler = handler
