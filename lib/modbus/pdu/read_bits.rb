@@ -71,7 +71,7 @@ module Modbus
     # Base class PDU for modbus bit based functions (response message)
     #
     class ReadBitsResponse < PDU
-      attr_accessor :bit_values
+      attr_accessor :bytes # String
 
 
       # Initializes a new PDU instance. Decodes from protocol data if given.
@@ -79,7 +79,7 @@ module Modbus
       # @param data [Modbus::ProtocolData] The protocol data to decode.
       #
       def initialize(data = nil, func_code = nil)
-        @bit_values = []
+        @bytes = ''.b
         super
       end
 
@@ -90,12 +90,9 @@ module Modbus
       #
       def decode(data)
         byte_count = data.shift_byte
-        byte_count.times do
-          byte = data.shift_byte
 
-          8.times do |bit|
-            @bit_values.push byte[bit] == 1
-          end
+        byte_count.times do
+          @bytes << data.shift_byte
         end
       end
 
@@ -108,17 +105,10 @@ module Modbus
         data = super
         data.push_byte byte_count
 
-        @bit_values.each_slice(8) do |bools|
-          value   = 0
-          bit_pos = 0
-
-          bools.each do |bool|
-            value   += (1 << bit_pos) if bool
-            bit_pos += 1
-          end
-
-          data.push_byte value
+        @bytes.each_byte do |byte|
+          data.push_byte byte
         end
+
         data
       end
 
@@ -128,7 +118,7 @@ module Modbus
       # @return [Integer] The length.
       #
       def byte_count
-        (@bit_values.size.to_f / 8).ceil
+        @bytes.bytesize
       end
 
 

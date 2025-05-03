@@ -7,9 +7,6 @@ module Modbus
 
   class BitRegister < Register
 
-    attr_reader :bits
-
-
     def initialize(addr)
       super
       @bits = {}
@@ -23,6 +20,7 @@ module Modbus
     end
 
 
+    # @return [Integer]
     def value
       result = 0
 

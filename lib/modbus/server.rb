@@ -70,25 +70,30 @@ module Modbus
     end
 
 
+    # @return [String] byte string
     def read_bits(start_addr, bit_count)
       addr   = start_addr
       bit    = 0
-      values = []
+      addrs  = (bit_count / 16.0).ceil.times.map { |i| start_addr + i*16 }
+      nbytes = (bit_count / 8.0).ceil
+      bytes  = []
 
-      bit_count.times do |i|
-        bit   = i % 8
-        addr += 1 if i > 0 && bit == 0
-        reg   = @registers.fetch addr
+      addrs.each do |addr|
+        reg = @registers.fetch addr
 
         unless reg.is_a? BitRegister
           fail IllegalDataAddress, "wrong register type for read_bits" 
         end
 
-        value = reg.bits.fetch bit
-        values << value
+        value   = reg.value
+        hi_byte = (value >> 8) & 0xFF
+        lo_byte = (value >> 0) & 0xFF
+
+        bytes << hi_byte
+        bytes << lo_byte
       end
 
-      values
+      bytes[0...nbytes].pack('C*')
     rescue IndexError
       log.warn "read_bits @ #{addr} failed (IllegalDataAddress)"
       fail IllegalDataAddress

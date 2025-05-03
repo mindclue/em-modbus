@@ -81,10 +81,10 @@ module Modbus
 
 
       def read_bits(table, response_class)
-        number         = address_to_number table, @request_adu.pdu.start_addr
-        bit_values     = @conn.read_bits number, @request_adu.pdu.bit_count
-        pdu            = response_class.new
-        pdu.bit_values = bit_values
+        number    = address_to_number table, @request_adu.pdu.start_addr
+        bytes     = @conn.read_bits number, @request_adu.pdu.bit_count
+        pdu       = response_class.new
+        pdu.bytes = bytes
         pdu
       end
 

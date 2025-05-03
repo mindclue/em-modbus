@@ -165,12 +165,12 @@ module Modbus
 
 
       def handle_read_coils
-        @response_adu.pdu.bit_values
+        @response_adu.pdu.bytes
       end
 
 
       def handle_read_input_status
-        @response_adu.pdu.bit_values
+        @response_adu.pdu.bytes
       end
 
 
