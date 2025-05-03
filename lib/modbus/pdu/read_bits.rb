@@ -9,6 +9,9 @@ module Modbus
     # Base class PDU for modbus bit based functions (request message)
     #
     class ReadBitsRequest < PDU
+      VALID_BIT_COUNTS = 1 .. 2000
+
+
       attr_accessor :start_addr, :bit_count
 
 
@@ -57,7 +60,9 @@ module Modbus
       # Validates the PDU. Raises exceptions if validation fails.
       #
       def validate
-        fail ClientError, "Register count must be in (1..127), got '#{@bit_count.inspect}'" unless (1..127).include?(@bit_count)
+        unless VALID_BIT_COUNTS.include?(@bit_count)
+          fail ClientError, "Bit count must be in (1..2000), got #{@bit_count.inspect}"
+        end
       end
 
     end
